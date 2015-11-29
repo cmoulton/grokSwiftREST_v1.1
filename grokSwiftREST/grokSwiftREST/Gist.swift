@@ -9,7 +9,7 @@
 import Foundation
 import SwiftyJSON
 
-class Gist {
+class Gist: ResponseJSONObjectSerializable {
   var id: String?
   var description: String?
   var ownerLogin: String?
