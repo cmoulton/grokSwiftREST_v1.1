@@ -33,7 +33,8 @@ enum GistRouter: URLRequestConvertible {
     let URLRequest = NSMutableURLRequest(URL: URL.URLByAppendingPathComponent(result.path))
   
     let encoding = Alamofire.ParameterEncoding.JSON
-    let (encoded, _) = encoding.encode(URLRequest, parameters: result.parameters) encoded.HTTPMethod = method.rawValue
+    let (encoded, _) = encoding.encode(URLRequest, parameters: result.parameters)
+    encoded.HTTPMethod = method.rawValue
   
     return encoded
   }
