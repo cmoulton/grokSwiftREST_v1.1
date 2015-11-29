@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "D485CE6C7310C5130FFCFDBEC0BA10EF1811DF27",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "D485CE6C7310C5130FFCFDBEC0BA10EF1811DF27" : 0,
+    "2C9D65AC184BF47FEE5C8071A380AE699D73A123" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "8797697F-E9B8-43BD-9306-AC1D4678CACB",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "D485CE6C7310C5130FFCFDBEC0BA10EF1811DF27" : "new\/",
+    "2C9D65AC184BF47FEE5C8071A380AE699D73A123" : "old\/grokSwiftREST\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "grokSwiftREST",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "grokSwiftREST\/grokSwiftREST.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:cmoulton\/grokSwiftREST.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "2C9D65AC184BF47FEE5C8071A380AE699D73A123"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:cmoulton\/grokSwiftREST_v1.1.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "D485CE6C7310C5130FFCFDBEC0BA10EF1811DF27"
+    }
+  ]
+}
