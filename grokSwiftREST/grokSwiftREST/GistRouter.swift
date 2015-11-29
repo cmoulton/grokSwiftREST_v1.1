@@ -13,29 +13,37 @@ enum GistRouter: URLRequestConvertible {
   static let baseURLString:String = "https://api.github.com"
   
   case GetPublic() // GET https://api.github.com/gists/public
+  case GetAtPath(String) // GET at given path
   
   var URLRequest: NSMutableURLRequest {
-  var method: Alamofire.Method {
-    switch self {
-      case .GetPublic:
+    var method: Alamofire.Method {
+      switch self {
+    case .GetPublic:
         return .GET
+    case .GetAtPath:
+      return .GET
       }
     }
-  
+    
     let result: (path: String, parameters: [String: AnyObject]?) = {
       switch self {
-      case .GetPublic:
-        return ("/gists/public", nil)
+    case .GetPublic:
+      return ("/gists/public", nil)
+    case .GetAtPath(let path):
+      let URL = NSURL(string: path)
+      let relativePath = URL!.relativePath!
+      return (relativePath, nil)
       }
     }()
-  
+    
     let URL = NSURL(string: GistRouter.baseURLString)!
     let URLRequest = NSMutableURLRequest(URL: URL.URLByAppendingPathComponent(result.path))
-  
+    
     let encoding = Alamofire.ParameterEncoding.JSON
     let (encoded, _) = encoding.encode(URLRequest, parameters: result.parameters)
+    
     encoded.HTTPMethod = method.rawValue
-  
+    
     return encoded
   }
 }
