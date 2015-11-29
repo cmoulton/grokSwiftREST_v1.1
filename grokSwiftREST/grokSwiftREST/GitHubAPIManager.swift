@@ -1,0 +1,25 @@
+//
+//  GitHubAPIManager.swift
+//  grokSwiftREST
+//
+//  Created by Christina Moulton on 2015-11-29.
+//  Copyright © 2015 Teak Mobile Inc. All rights reserved.
+//
+
+import Foundation
+import Alamofire
+import SwiftyJSON
+
+class GitHubAPIManager {
+  static let sharedInstance = GitHubAPIManager()
+
+  func printPublicGists() -> Void {
+    Alamofire.request(GistRouter.GetPublic())
+    .responseString { response in
+      if let receivedString = response.result.value {
+        print(receivedString)
+      }
+    }
+  }
+  
+}
