@@ -32,11 +32,13 @@ class MasterViewController: UITableViewController {
     super.viewWillAppear(animated)
   }
   
+  func loadGists() {
+    GitHubAPIManager.sharedInstance.printPublicGists()
+  }
+  
   override func viewDidAppear(animated: Bool) {
     super.viewDidAppear(animated)
-    // TEST
-    GitHubAPIManager.sharedInstance.printPublicGists()
-    // END TEST
+    loadGists()
   }
 
   override func didReceiveMemoryWarning() {
