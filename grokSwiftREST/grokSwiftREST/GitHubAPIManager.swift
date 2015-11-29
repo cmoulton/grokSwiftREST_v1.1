@@ -37,6 +37,18 @@ class GitHubAPIManager {
     }
   }
   
+  func doGetWithBasicAuth() -> Void {
+    let username = "myUsername"
+    let password = "myPassword"
+    Alamofire.request(.GET, "https://httpbin.org/basic-auth/\(username)/\(password)")
+      .authenticate(user: username, password: password)
+      .responseString { response in
+        if let receivedString = response.result.value {
+          print(receivedString)
+        }
+      }
+  }
+  
   func getGists(urlRequest: URLRequestConvertible, completionHandler: (Result<[Gist], NSError>, String?) -> Void) {
     alamofireManager.request(urlRequest)
       .validate()
