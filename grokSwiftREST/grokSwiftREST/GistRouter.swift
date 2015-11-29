@@ -45,11 +45,19 @@ enum GistRouter: URLRequestConvertible {
     let URL = NSURL(string: GistRouter.baseURLString)!
     let URLRequest = NSMutableURLRequest(URL: URL.URLByAppendingPathComponent(result.path))
     
+    let username = "myUsername"
+    let password = "myPassword"
+    
+    let credentialData = "\(username):\(password)".dataUsingEncoding(NSUTF8StringEncoding)!
+    let base64Credentials = credentialData.base64EncodedStringWithOptions([])
+    
+    URLRequest.setValue("Basic \(base64Credentials)", forHTTPHeaderField: "Authorization")
+    
     let encoding = Alamofire.ParameterEncoding.JSON
-    let (encoded, _) = encoding.encode(URLRequest, parameters: result.parameters)
+    let (encodedRequest, _) = encoding.encode(URLRequest, parameters: result.parameters)
     
-    encoded.HTTPMethod = method.rawValue
+    encodedRequest.HTTPMethod = method.rawValue
     
-    return encoded
+    return encodedRequest
   }
 }

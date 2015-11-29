@@ -83,6 +83,10 @@ class MasterViewController: UITableViewController {
   override func viewDidAppear(animated: Bool) {
     super.viewDidAppear(animated)
     loadGists(nil)
+    
+    // TEST
+    GitHubAPIManager.sharedInstance.printMyStarredGistsWithBasicAuth()
+    // END TEST
   }
   
   override func didReceiveMemoryWarning() {
@@ -166,8 +170,8 @@ class MasterViewController: UITableViewController {
   
   // MARK: - Pull to Refresh
   func refresh(sender:AnyObject) {
-        nextPageURLString = nil // so it doesn't try to append the results
-        loadGists(nil)
+    nextPageURLString = nil // so it doesn't try to append the results
+    loadGists(nil)
   }
   
 }

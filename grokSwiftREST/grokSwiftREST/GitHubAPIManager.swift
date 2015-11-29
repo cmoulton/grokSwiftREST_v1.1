@@ -28,6 +28,15 @@ class GitHubAPIManager {
     }
   }
   
+  func printMyStarredGistsWithBasicAuth() -> Void {
+    Alamofire.request(GistRouter.GetPublic())
+    .responseString { response in
+      if let receivedString = response.result.value {
+        print(receivedString)
+      }
+    }
+  }
+  
   func getGists(urlRequest: URLRequestConvertible, completionHandler: (Result<[Gist], NSError>, String?) -> Void) {
     alamofireManager.request(urlRequest)
       .validate()
