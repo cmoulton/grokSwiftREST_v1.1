@@ -29,7 +29,8 @@ class GitHubAPIManager {
   }
   
   func printMyStarredGistsWithBasicAuth() -> Void {
-    Alamofire.request(GistRouter.GetPublic())
+    Alamofire.request(GistRouter.GetMyStarred())
+    .validate()
     .responseString { response in
       if let receivedString = response.result.value {
         print(receivedString)
