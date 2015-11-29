@@ -15,6 +15,7 @@ class MasterViewController: UITableViewController {
   var gists = [Gist]()
   var nextPageURLString: String?
   var isLoading = false
+  var dateFormatter = NSDateFormatter()
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -36,8 +37,11 @@ class MasterViewController: UITableViewController {
     // add refresh control for pull to refresh
     if (self.refreshControl == nil) {
       self.refreshControl = UIRefreshControl()
+      self.refreshControl?.attributedTitle = NSAttributedString(string: "Pull to refresh")
       self.refreshControl?.addTarget(self, action: "refresh:",
         forControlEvents: UIControlEvents.ValueChanged)
+      self.dateFormatter.dateStyle = NSDateFormatterStyle.ShortStyle
+      self.dateFormatter.timeStyle = NSDateFormatterStyle.LongStyle
     }
   }
   
@@ -66,6 +70,12 @@ class MasterViewController: UITableViewController {
         self.gists = fetchedGists
         }
       }
+      
+      // update "last updated" title for refresh control
+      let now = NSDate()
+      let updateString = "Last Updated at " + self.dateFormatter.stringFromDate(now)
+      self.refreshControl?.attributedTitle = NSAttributedString(string: updateString)
+      
       self.tableView.reloadData()
     }
   }
