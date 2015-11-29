@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import Alamofire
+import SwiftyJSON
 
 extension Alamofire.Request {
   public func responseObject<T: ResponseJSONObjectSerializable>(completionHandler:
@@ -45,8 +47,7 @@ extension Alamofire.Request {
       return response(responseSerializer: serializer, completionHandler: completionHandler)
   }
 
-  public func responseArray<T: ResponseJSONObjectSerializable>(
-    completionHandler: Response<[T], NSError> -> Void) -> Self {
+  public func responseArray<T: ResponseJSONObjectSerializable>(completionHandler: Response<[T], NSError> -> Void) -> Self {
       let serializer = ResponseSerializer<[T], NSError> { request, response, data, error in
         guard error == nil else {
           return .Failure(error!)
