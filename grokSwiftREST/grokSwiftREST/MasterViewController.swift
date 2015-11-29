@@ -93,8 +93,22 @@ class MasterViewController: UITableViewController {
     let gist = gists[indexPath.row]
     cell.textLabel!.text = gist.description
     cell.detailTextLabel!.text = gist.ownerLogin
-    // TODO: set cell.imageView to display image at gist.ownerAvatarURL
-          
+    if let urlString = gist.ownerAvatarURL {
+      GitHubAPIManager.sharedInstance.imageFromURLString(urlString, completionHandler: {
+        (image, error) in
+        if let error = error {
+          print(error)
+        }
+        if let cellToUpdate = self.tableView?.cellForRowAtIndexPath(indexPath) {
+          cellToUpdate.imageView?.image = image // will work fine even if image is nil
+          // need to reload the view, which won't happen otherwise
+          // since this is in an async call
+          cellToUpdate.setNeedsLayout()
+        }
+      })
+    } else {
+      cell.imageView?.image = nil
+    }
     return cell
   }
   
