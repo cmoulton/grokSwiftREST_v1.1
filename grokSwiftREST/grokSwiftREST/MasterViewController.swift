@@ -32,18 +32,7 @@ class MasterViewController: UITableViewController {
   }
   
   func loadGists() {
-    let gist1 = Gist()
-    gist1.description = "The first gist"
-    gist1.ownerLogin = "gist1Owner"
-    let gist2 = Gist()
-    gist2.description = "The second gist"
-    gist2.ownerLogin = "gist2Owner"
-    let gist3 = Gist()
-    gist3.description = "The third gist"
-    gist3.ownerLogin = "gist3Owner"
-    gists = [gist1, gist2, gist3]
-    // Tell the table view to reload
-    self.tableView.reloadData()
+    GitHubAPIManager.sharedInstance.printPublicGists()
   }
   
   override func viewDidAppear(animated: Bool) {
