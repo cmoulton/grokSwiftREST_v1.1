@@ -13,6 +13,8 @@ class MasterViewController: UITableViewController {
   var detailViewController: DetailViewController? = nil
   var gists = [Gist]()
   
+  var imageCache: Dictionary<String, UIImage?> = Dictionary<String, UIImage?>()
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     // Do any additional setup after loading the view, typically from a nib.
@@ -89,26 +91,33 @@ class MasterViewController: UITableViewController {
   
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
-    
     let gist = gists[indexPath.row]
     cell.textLabel!.text = gist.description
     cell.detailTextLabel!.text = gist.ownerLogin
+    // set cell.imageView to display image at gist.ownerAvatarURL
     if let urlString = gist.ownerAvatarURL {
-      GitHubAPIManager.sharedInstance.imageFromURLString(urlString, completionHandler: {
-        (image, error) in
-        if let error = error {
-          print(error)
-        }
-        if let cellToUpdate = self.tableView?.cellForRowAtIndexPath(indexPath) {
-          cellToUpdate.imageView?.image = image // will work fine even if image is nil
-          // need to reload the view, which won't happen otherwise
-          // since this is in an async call
-          cellToUpdate.setNeedsLayout()
-        }
-      })
+      if let cachedImage = imageCache[urlString] {
+        cell.imageView?.image = cachedImage // will work fine even if image is nil
+      } else {
+        GitHubAPIManager.sharedInstance.imageFromURLString(urlString, completionHandler: {
+          (image, error) in
+          if let error = error {
+            print(error)
+          }
+          // Save the image so we won't have to keep fetching it if they scroll
+          self.imageCache[urlString] = image
+          if let cellToUpdate = self.tableView?.cellForRowAtIndexPath(indexPath) {
+            cellToUpdate.imageView?.image = image // will work fine even if image is nil
+            // need to reload the view, which won't happen otherwise
+            // since this is in an async call
+            cellToUpdate.setNeedsLayout()
+          }
+        })
+      }
     } else {
       cell.imageView?.image = nil
     }
+            
     return cell
   }
   
