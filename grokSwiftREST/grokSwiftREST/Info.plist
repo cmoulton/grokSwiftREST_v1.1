@@ -53,5 +53,16 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.teakmobile.grokswift.grokSwiftREST</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>grokGitHub</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>

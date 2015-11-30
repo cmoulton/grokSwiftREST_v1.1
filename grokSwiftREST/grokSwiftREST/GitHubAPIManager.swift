@@ -77,10 +77,14 @@ class GitHubAPIManager {
   }
   
   // MARK: - OAuth flow
-  
   func URLToStartOAuth2Login() -> NSURL? {
-    // TODO: implement
-    // TODO: get and print starred gists
+    let authPath:String = "https://github.com/login/oauth/authorize?client_id=\(clientID)&scope=gist&state=TEST_STATE"
+    guard let authURL:NSURL = NSURL(string: authPath) else {
+      // TODO: handle error
+      return nil
+    }
+    
+    return authURL
   }
 
   func printMyStarredGistsWithOAuth2() -> Void {
