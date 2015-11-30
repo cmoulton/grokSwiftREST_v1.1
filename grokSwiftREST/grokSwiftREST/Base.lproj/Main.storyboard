@@ -138,7 +138,7 @@
         <!--Login View Controller-->
         <scene sceneID="tgS-Vz-67V">
             <objects>
-                <viewController id="z8i-Py-PGg" customClass="LoginViewController" customModule="LoginViewController" sceneMemberID="viewController">
+                <viewController id="z8i-Py-PGg" customClass="LoginViewController" customModule="grokSwiftREST" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="tpv-nO-FqR"/>
                         <viewControllerLayoutGuide type="bottom" id="xw4-eC-stE"/>
