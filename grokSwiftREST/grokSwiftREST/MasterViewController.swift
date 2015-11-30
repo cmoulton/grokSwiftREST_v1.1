@@ -83,10 +83,6 @@ class MasterViewController: UITableViewController {
   override func viewDidAppear(animated: Bool) {
     super.viewDidAppear(animated)
     loadGists(nil)
-    
-    // TEST
-    GitHubAPIManager.sharedInstance.printMyStarredGistsWithBasicAuth()
-    // END TEST
   }
   
   override func didReceiveMemoryWarning() {

@@ -28,6 +28,7 @@ class GitHubAPIManager {
     }
   }
   
+  // MARK: Basic Auth
   func printMyStarredGistsWithBasicAuth() -> Void {
     Alamofire.request(GistRouter.GetMyStarred())
     .validate()
