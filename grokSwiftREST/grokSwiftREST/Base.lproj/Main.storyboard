@@ -138,7 +138,7 @@
         <!--Login View Controller-->
         <scene sceneID="tgS-Vz-67V">
             <objects>
-                <viewController id="z8i-Py-PGg" customClass="LoginViewController" customModule="grokSwiftREST" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LoginViewController" id="z8i-Py-PGg" customClass="LoginViewController" customModule="grokSwiftREST" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="tpv-nO-FqR"/>
                         <viewControllerLayoutGuide type="bottom" id="xw4-eC-stE"/>
@@ -147,8 +147,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9eB-K8-9wu">
-                                <rect key="frame" x="225" y="285" width="151" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9eB-K8-9wu">
+                                <rect key="frame" x="246.5" y="285" width="108" height="30"/>
                                 <state key="normal" title="Login to GitHub"/>
                                 <connections>
                                     <action selector="tappedLoginButton" destination="z8i-Py-PGg" eventType="touchUpInside" id="XqP-sw-iSn"/>
