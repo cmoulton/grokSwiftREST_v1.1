@@ -178,6 +178,7 @@ class GitHubAPIManager {
       .responseString { response in
         guard response.result.error == nil else {
           print(response.result.error!)
+          GitHubAPIManager.sharedInstance.OAuthToken = nil
           return
         }
         if let receivedString = response.result.value {
