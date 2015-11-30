@@ -61,7 +61,15 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
     
       guard result.error == nil else {
         print(result.error)
-        // TODO: display error
+        self.nextPageURLString = nil
+        
+        self.isLoading = false
+        if let error = result.error {
+          if error.domain == NSURLErrorDomain &&
+          error.code == NSURLErrorUserAuthenticationRequired {
+            self.showOAuthLoginView()
+          }
+        }
         return
       }
     
