@@ -8,14 +8,16 @@
 
 import UIKit
 import PINRemoteImage
+import SafariServices
 
-class MasterViewController: UITableViewController, LoginViewDelegate {
+class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariViewControllerDelegate {
   
   var detailViewController: DetailViewController? = nil
   var gists = [Gist]()
   var nextPageURLString: String?
   var isLoading = false
   var dateFormatter = NSDateFormatter()
+  var safariViewController: SFSafariViewController?
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -191,7 +193,20 @@ class MasterViewController: UITableViewController, LoginViewDelegate {
     self.dismissViewControllerAnimated(false, completion: nil)
     
     if let authURL = GitHubAPIManager.sharedInstance.URLToStartOAuth2Login() {
-      // TODO: show web page
+      safariViewController = SFSafariViewController(URL: authURL)
+      safariViewController?.delegate = self
+      if let webViewController = safariViewController {
+        self.presentViewController(webViewController, animated: true, completion: nil)
+      }
+    }
+  }
+  
+  // MARK: - Safari View Controller Delegate
+  func safariViewController(controller: SFSafariViewController, didCompleteInitialLoad didLoadSuccessfully: Bool) {
+    // Detect not being able to load the OAuth URL
+    if (!didLoadSuccessfully) {
+      // TODO: handle this better
+      controller.dismissViewControllerAnimated(true, completion: nil)
     }
   }
 }
