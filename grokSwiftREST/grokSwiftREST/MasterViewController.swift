@@ -84,7 +84,11 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
   
   override func viewDidAppear(animated: Bool) {
     super.viewDidAppear(animated)
-    loadInitialData()
+    
+    let defaults = NSUserDefaults.standardUserDefaults()
+    if (!defaults.boolForKey("loadingOAuthToken")) {
+      loadInitialData()
+    }
   }
   
   func loadInitialData() {
@@ -190,6 +194,9 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
   
   // MARK: - Login View Delegate
   func didTapLoginButton() {
+    let defaults = NSUserDefaults.standardUserDefaults()
+    defaults.setBool(true, forKey: "loadingOAuthToken")
+    
     self.dismissViewControllerAnimated(false, completion: nil)
     
     if let authURL = GitHubAPIManager.sharedInstance.URLToStartOAuth2Login() {
@@ -205,7 +212,8 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
   func safariViewController(controller: SFSafariViewController, didCompleteInitialLoad didLoadSuccessfully: Bool) {
     // Detect not being able to load the OAuth URL
     if (!didLoadSuccessfully) {
-      // TODO: handle this better
+      let defaults = NSUserDefaults.standardUserDefaults()
+      defaults.setBool(false, forKey: "loadingOAuthToken")
       controller.dismissViewControllerAnimated(true, completion: nil)
     }
   }

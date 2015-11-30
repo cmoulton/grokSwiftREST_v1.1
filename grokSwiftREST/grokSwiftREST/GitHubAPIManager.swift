@@ -96,7 +96,7 @@ class GitHubAPIManager {
     let jsonHeader = ["Accept": "application/json"]
     Alamofire.request(.POST, getTokenPath, parameters: tokenParams, headers: jsonHeader)
       .responseString { response in
-        if let error = response.result.error {
+        if let _ = response.result.error {
           let defaults = NSUserDefaults.standardUserDefaults()
           defaults.setBool(false, forKey: "loadingOAuthToken")
           // TODO: bubble up error
