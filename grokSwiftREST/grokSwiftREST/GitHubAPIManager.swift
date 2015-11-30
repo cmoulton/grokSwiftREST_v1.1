@@ -90,6 +90,46 @@ class GitHubAPIManager {
     return authURL
   }
   
+  func swapAuthCodeForToken(receivedCode: String) {
+    let getTokenPath:String = "https://github.com/login/oauth/access_token"
+    let tokenParams = ["client_id": clientID, "client_secret": clientSecret, "code": receivedCode]
+    let jsonHeader = ["Accept": "application/json"]
+    Alamofire.request(.POST, getTokenPath, parameters: tokenParams, headers: jsonHeader)
+      .responseString { response in
+        if let error = response.result.error {
+          let defaults = NSUserDefaults.standardUserDefaults()
+          defaults.setBool(false, forKey: "loadingOAuthToken")
+          // TODO: bubble up error
+          return
+        }
+        print(response.result.value)
+        if let receivedResults = response.result.value, jsonData = receivedResults.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false) {
+          let jsonResults = JSON(data: jsonData)
+          for (key, value) in jsonResults {
+            switch key {
+              case "access_token":
+                self.OAuthToken = value.string
+              case "scope":
+                // TODO: verify scope
+                print("SET SCOPE")
+              case "token_type":
+                // TODO: verify is bearer
+                print("CHECK IF BEARER")
+              default:
+                print("got more than I expected from the OAuth token exchange")
+                print(key)
+            }
+          }
+        }
+    
+        let defaults = NSUserDefaults.standardUserDefaults()
+        defaults.setBool(false, forKey: "loadingOAuthToken")
+        if (self.hasOAuthToken()) {
+          self.printMyStarredGistsWithOAuth2()
+        }
+      }
+  }
+  
   func processOAuthStep1Response(url: NSURL) {
     let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: false)
     var code:String?
@@ -102,41 +142,11 @@ class GitHubAPIManager {
       }
     }
     if let receivedCode = code {
-      let getTokenPath:String = "https://github.com/login/oauth/access_token"
-      let tokenParams = ["client_id": clientID, "client_secret": clientSecret,
-      "code": receivedCode]
-      let jsonHeader = ["Accept": "application/json"]
-      Alamofire.request(.POST, getTokenPath, parameters: tokenParams, headers: jsonHeader)
-        .responseString { response in
-          if let error = response.result.error {
-            let defaults = NSUserDefaults.standardUserDefaults()
-            defaults.setBool(false, forKey: "loadingOAuthToken")
-            // TODO: bubble up error
-            return
-          }
-          print(response.result.value)
-          if let receivedResults = response.result.value, jsonData = receivedResults.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false) {
-            let jsonResults = JSON(data: jsonData)
-            for (key, value) in jsonResults {
-              switch key {
-                case "access_token":
-                  self.OAuthToken = value.string
-                case "scope":
-                  // TODO: verify scope
-                  print("SET SCOPE")
-                case "token_type":
-                  // TODO: verify is bearer
-                  print("CHECK IF BEARER")
-                default:
-                  print("got more than I expected from the OAuth token exchange")
-                  print(key)
-              }
-            }
-          }
-          if (self.hasOAuthToken()) {
-            self.printMyStarredGistsWithOAuth2()
-          }
-        }
+      swapAuthCodeForToken(receivedCode)
+    } else {
+      // no code in URL that we launched with
+      let defaults = NSUserDefaults.standardUserDefaults()
+      defaults.setBool(false, forKey: "loadingOAuthToken")
     }
   }
   
