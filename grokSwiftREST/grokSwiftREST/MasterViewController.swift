@@ -92,10 +92,24 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
   }
   
   func loadInitialData() {
+    isLoading = true
+    GitHubAPIManager.sharedInstance.OAuthTokenCompletionHandler = { (error) -> Void in
+      self.safariViewController?.dismissViewControllerAnimated(true, completion: nil)
+      if let error = error {
+        print(error)
+        self.isLoading = false
+        // TODO: handle error
+        // Something went wrong, try again
+        self.showOAuthLoginView()
+      } else {
+        self.loadGists(nil)
+      }
+    }
+    
     if (!GitHubAPIManager.sharedInstance.hasOAuthToken()) {
-      showOAuthLoginView()
+      self.showOAuthLoginView()
     } else {
-      GitHubAPIManager.sharedInstance.printMyStarredGistsWithOAuth2()
+      loadGists(nil)
     }
   }
   
@@ -172,8 +186,8 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
   }
   
   override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+    // Return false if you do not want the specified item to be editable.
+    return true
   }
   
   override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
@@ -208,6 +222,12 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
       if let webViewController = safariViewController {
         self.presentViewController(webViewController, animated: true, completion: nil)
       }
+    } else {
+      defaults.setBool(false, forKey: "loadingOAuthToken")
+      if let completionHandler = GitHubAPIManager.sharedInstance.OAuthTokenCompletionHandler {
+        let error = NSError(domain: GitHubAPIManager.ErrorDomain, code: -1, userInfo: [NSLocalizedDescriptionKey: "Could not create an OAuth authorization URL", NSLocalizedRecoverySuggestionErrorKey: "Please retry your request"])
+        completionHandler(error)
+      }
     }
   }
   
@@ -217,6 +237,10 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
     if (!didLoadSuccessfully) {
       let defaults = NSUserDefaults.standardUserDefaults()
       defaults.setBool(false, forKey: "loadingOAuthToken")
+      if let completionHandler = GitHubAPIManager.sharedInstance.OAuthTokenCompletionHandler {
+        let error = NSError(domain: NSURLErrorDomain, code: NSURLErrorNotConnectedToInternet, userInfo: [NSLocalizedDescriptionKey: "No Internet Connection", NSLocalizedRecoverySuggestionErrorKey: "Please retry your request"])
+        completionHandler(error)
+      }
       controller.dismissViewControllerAnimated(true, completion: nil)
     }
   }

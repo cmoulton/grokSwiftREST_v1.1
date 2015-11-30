@@ -14,9 +14,15 @@ import Locksmith
 class GitHubAPIManager {
   static let sharedInstance = GitHubAPIManager()
   var alamofireManager: Alamofire.Manager
+  static let ErrorDomain = "com.error.GitHubAPIManager"
   
   let clientID: String = "1234567890"
   let clientSecret: String = "abcdefghijkl"
+  
+  // handlers for the OAuth process
+  // stored as vars since sometimes it requires a round trip to safari which
+  // makes it hard to just keep a reference to it
+  var OAuthTokenCompletionHandler:(NSError? -> Void)?
   
   var OAuthToken: String? {
     set {
@@ -119,10 +125,13 @@ class GitHubAPIManager {
     let jsonHeader = ["Accept": "application/json"]
     Alamofire.request(.POST, getTokenPath, parameters: tokenParams, headers: jsonHeader)
       .responseString { response in
-        if let _ = response.result.error {
+        if let error  = response.result.error {
           let defaults = NSUserDefaults.standardUserDefaults()
           defaults.setBool(false, forKey: "loadingOAuthToken")
-          // TODO: bubble up error
+
+          if let completionHandler = self.OAuthTokenCompletionHandler {
+            completionHandler(error)
+          }
           return
         }
         print(response.result.value)
@@ -147,8 +156,16 @@ class GitHubAPIManager {
     
         let defaults = NSUserDefaults.standardUserDefaults()
         defaults.setBool(false, forKey: "loadingOAuthToken")
-        if (self.hasOAuthToken()) {
-          self.printMyStarredGistsWithOAuth2()
+        
+        if let completionHandler = self.OAuthTokenCompletionHandler {
+          if (self.hasOAuthToken()) {
+            completionHandler(nil)
+          } else  {
+            let noOAuthError = NSError(domain: GitHubAPIManager.ErrorDomain, code: -1, userInfo:
+              [NSLocalizedDescriptionKey: "Could not obtain an OAuth token",
+                NSLocalizedRecoverySuggestionErrorKey: "Please retry your request"])
+            completionHandler(noOAuthError)
+          }
         }
       }
   }
@@ -170,6 +187,11 @@ class GitHubAPIManager {
       // no code in URL that we launched with
       let defaults = NSUserDefaults.standardUserDefaults()
       defaults.setBool(false, forKey: "loadingOAuthToken")
+      
+      if let completionHandler = self.OAuthTokenCompletionHandler {
+        let noCodeInResponseError = NSError(domain: GitHubAPIManager.ErrorDomain, code: -1, userInfo: [NSLocalizedDescriptionKey: "Could not obtain an OAuth code", NSLocalizedRecoverySuggestionErrorKey: "Please retry your request"])
+        completionHandler(noCodeInResponseError)
+      }
     }
   }
   

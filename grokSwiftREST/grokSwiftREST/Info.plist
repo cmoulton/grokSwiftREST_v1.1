@@ -60,7 +60,7 @@
 			<string>com.teakmobile.grokswift.grokSwiftREST</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>grokGitHub</string>
+				<string>grokgithuboauth</string>
 			</array>
 		</dict>
 	</array>
