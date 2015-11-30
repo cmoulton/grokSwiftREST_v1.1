@@ -174,7 +174,7 @@ class GitHubAPIManager {
   }
   
   func printMyStarredGistsWithOAuth2() -> Void {
-    alamofireManager.request(GistRouter.GetMyStarred())
+    let starredGistsRequest = alamofireManager.request(GistRouter.GetMyStarred())
       .responseString { response in
         guard response.result.error == nil else {
           print(response.result.error!)
@@ -185,6 +185,7 @@ class GitHubAPIManager {
           print(receivedString)
         }
       }
+    debugPrint(starredGistsRequest)
   }
   
   func getGists(urlRequest: URLRequestConvertible, completionHandler: (Result<[Gist], NSError>, String?) -> Void) {
