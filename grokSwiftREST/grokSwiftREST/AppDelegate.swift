@@ -25,9 +25,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
   }
   
   func application(application: UIApplication, handleOpenURL url: NSURL) -> Bool {
+    GitHubAPIManager.sharedInstance.processOAuthStep1Response(url)
     return true
   }
-  
   // MARK: - Split view
   
   func splitViewController(splitViewController: UISplitViewController,

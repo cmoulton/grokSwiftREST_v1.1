@@ -13,6 +13,7 @@ import SwiftyJSON
 class GitHubAPIManager {
   static let sharedInstance = GitHubAPIManager()
   var alamofireManager: Alamofire.Manager
+  var OAuthToken: String?
   
   let clientID: String = "1234567890"
   let clientSecret: String = "abcdefghijkl"
@@ -72,7 +73,9 @@ class GitHubAPIManager {
   
   // MARK: - OAuth 2.0
   func hasOAuthToken() -> Bool {
-    // TODO: implement
+    if let token = self.OAuthToken {
+      return !token.isEmpty
+    }
     return false
   }
   
@@ -86,7 +89,57 @@ class GitHubAPIManager {
     
     return authURL
   }
-
+  
+  func processOAuthStep1Response(url: NSURL) {
+    let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: false)
+    var code:String?
+    if let queryItems = components?.queryItems {
+      for queryItem in queryItems {
+        if (queryItem.name.lowercaseString == "code") {
+          code = queryItem.value
+          break
+        }
+      }
+    }
+    if let receivedCode = code {
+      let getTokenPath:String = "https://github.com/login/oauth/access_token"
+      let tokenParams = ["client_id": clientID, "client_secret": clientSecret,
+      "code": receivedCode]
+      let jsonHeader = ["Accept": "application/json"]
+      Alamofire.request(.POST, getTokenPath, parameters: tokenParams, headers: jsonHeader)
+        .responseString { response in
+          if let error = response.result.error {
+            let defaults = NSUserDefaults.standardUserDefaults()
+            defaults.setBool(false, forKey: "loadingOAuthToken")
+            // TODO: bubble up error
+            return
+          }
+          print(response.result.value)
+          if let receivedResults = response.result.value, jsonData = receivedResults.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false) {
+            let jsonResults = JSON(data: jsonData)
+            for (key, value) in jsonResults {
+              switch key {
+                case "access_token":
+                  self.OAuthToken = value.string
+                case "scope":
+                  // TODO: verify scope
+                  print("SET SCOPE")
+                case "token_type":
+                  // TODO: verify is bearer
+                  print("CHECK IF BEARER")
+                default:
+                  print("got more than I expected from the OAuth token exchange")
+                  print(key)
+              }
+            }
+          }
+          if (self.hasOAuthToken()) {
+            self.printMyStarredGistsWithOAuth2()
+          }
+        }
+    }
+  }
+  
   func printMyStarredGistsWithOAuth2() -> Void {
     alamofireManager.request(GistRouter.GetMyStarred())
       .responseString { response in
