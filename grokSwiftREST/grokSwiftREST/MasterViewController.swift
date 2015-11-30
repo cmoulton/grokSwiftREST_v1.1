@@ -9,7 +9,7 @@
 import UIKit
 import PINRemoteImage
 
-class MasterViewController: UITableViewController {
+class MasterViewController: UITableViewController, LoginViewDelegate {
   
   var detailViewController: DetailViewController? = nil
   var gists = [Gist]()
@@ -82,7 +82,23 @@ class MasterViewController: UITableViewController {
   
   override func viewDidAppear(animated: Bool) {
     super.viewDidAppear(animated)
-    loadGists(nil)
+    loadInitialData()
+  }
+  
+  func loadInitialData() {
+    if (!GitHubAPIManager.sharedInstance.hasOAuthToken()) {
+      showOAuthLoginView()
+    } else {
+      GitHubAPIManager.sharedInstance.printMyStarredGistsWithOAuth2()
+    }
+  }
+  
+  func showOAuthLoginView() {
+    let storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
+    if let loginVC = storyboard.instantiateViewControllerWithIdentifier("LoginViewController") as? LoginViewController {
+      loginVC.delegate = self
+      self.presentViewController(loginVC, animated: true, completion: nil)
+    }
   }
   
   override func didReceiveMemoryWarning() {
@@ -170,5 +186,13 @@ class MasterViewController: UITableViewController {
     loadGists(nil)
   }
   
+  // MARK: - Login View Delegate
+  func didTapLoginButton() {
+    self.dismissViewControllerAnimated(false, completion: nil)
+    
+    if let authURL = GitHubAPIManager.sharedInstance.URLToStartOAuth2Login() {
+      // TODO: show web page
+    }
+  }
 }
 

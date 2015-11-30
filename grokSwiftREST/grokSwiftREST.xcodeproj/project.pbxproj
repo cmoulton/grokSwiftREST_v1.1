@@ -13,6 +13,7 @@
 		CF20D7AE1C0B47B00073B0CF /* ResponseJSONObjectSerializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF20D7AD1C0B47B00073B0CF /* ResponseJSONObjectSerializable.swift */; };
 		CF20D7B01C0B48180073B0CF /* AlamofireRequest+JSONSerializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF20D7AF1C0B48180073B0CF /* AlamofireRequest+JSONSerializable.swift */; };
 		CF20E0E61C0B4CA70073B0CF /* placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = CF20E0E51C0B4CA70073B0CF /* placeholder.png */; };
+		CF20E0E81C0C988E0073B0CF /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF20E0E71C0C988E0073B0CF /* LoginViewController.swift */; };
 		CF3047231BD677970006CC45 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF3047221BD677970006CC45 /* AppDelegate.swift */; };
 		CF3047251BD677970006CC45 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF3047241BD677970006CC45 /* MasterViewController.swift */; };
 		CF3047271BD677970006CC45 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF3047261BD677970006CC45 /* DetailViewController.swift */; };
@@ -32,6 +33,7 @@
 		CF20D7AD1C0B47B00073B0CF /* ResponseJSONObjectSerializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseJSONObjectSerializable.swift; sourceTree = "<group>"; };
 		CF20D7AF1C0B48180073B0CF /* AlamofireRequest+JSONSerializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AlamofireRequest+JSONSerializable.swift"; sourceTree = "<group>"; };
 		CF20E0E51C0B4CA70073B0CF /* placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = placeholder.png; path = grokSwiftREST/placeholder.png; sourceTree = SOURCE_ROOT; };
+		CF20E0E71C0C988E0073B0CF /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		CF30471F1BD677970006CC45 /* grokSwiftREST.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = grokSwiftREST.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF3047221BD677970006CC45 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CF3047241BD677970006CC45 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
@@ -95,6 +97,7 @@
 				CF3047221BD677970006CC45 /* AppDelegate.swift */,
 				CF3047241BD677970006CC45 /* MasterViewController.swift */,
 				CF3047261BD677970006CC45 /* DetailViewController.swift */,
+				CF20E0E71C0C988E0073B0CF /* LoginViewController.swift */,
 				CF3047281BD677970006CC45 /* Main.storyboard */,
 				CF30472B1BD677970006CC45 /* Assets.xcassets */,
 				CF30472D1BD677970006CC45 /* LaunchScreen.storyboard */,
@@ -231,6 +234,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF20E0E81C0C988E0073B0CF /* LoginViewController.swift in Sources */,
 				CF3047271BD677970006CC45 /* DetailViewController.swift in Sources */,
 				CF20D7A81C0B2D870073B0CF /* GitHubAPIManager.swift in Sources */,
 				CF20D7AE1C0B47B00073B0CF /* ResponseJSONObjectSerializable.swift in Sources */,

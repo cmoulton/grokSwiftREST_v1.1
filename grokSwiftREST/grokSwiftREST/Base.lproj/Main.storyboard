@@ -135,6 +135,37 @@
             </objects>
             <point key="canvasLocation" x="-45" y="129"/>
         </scene>
+        <!--Login View Controller-->
+        <scene sceneID="tgS-Vz-67V">
+            <objects>
+                <viewController id="z8i-Py-PGg" customClass="LoginViewController" customModule="LoginViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="tpv-nO-FqR"/>
+                        <viewControllerLayoutGuide type="bottom" id="xw4-eC-stE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="lMd-GH-o4V">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9eB-K8-9wu">
+                                <rect key="frame" x="225" y="285" width="151" height="30"/>
+                                <state key="normal" title="Login to GitHub"/>
+                                <connections>
+                                    <action selector="tappedLoginButton" destination="z8i-Py-PGg" eventType="touchUpInside" id="XqP-sw-iSn"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="9eB-K8-9wu" firstAttribute="centerY" secondItem="lMd-GH-o4V" secondAttribute="centerY" id="6Lw-8y-nmW"/>
+                            <constraint firstItem="9eB-K8-9wu" firstAttribute="centerX" secondItem="lMd-GH-o4V" secondAttribute="centerX" id="OLv-nZ-BIE"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jrF-u2-MaD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-45" y="802"/>
+        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="6S0-TO-JiA"/>

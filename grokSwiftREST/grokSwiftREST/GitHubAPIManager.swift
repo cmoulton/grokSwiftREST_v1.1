@@ -14,6 +14,9 @@ class GitHubAPIManager {
   static let sharedInstance = GitHubAPIManager()
   var alamofireManager: Alamofire.Manager
   
+  let clientID: String = "1234567890"
+  let clientSecret: String = "abcdefghijkl"
+  
   init () {
     let configuration = NSURLSessionConfiguration.defaultSessionConfiguration()
     alamofireManager = Alamofire.Manager(configuration: configuration)
@@ -68,6 +71,18 @@ class GitHubAPIManager {
   }
   
   // MARK: - OAuth 2.0
+  func hasOAuthToken() -> Bool {
+    // TODO: implement
+    return false
+  }
+  
+  // MARK: - OAuth flow
+  
+  func URLToStartOAuth2Login() -> NSURL? {
+    // TODO: implement
+    // TODO: get and print starred gists
+  }
+
   func printMyStarredGistsWithOAuth2() -> Void {
     alamofireManager.request(GistRouter.GetMyStarred())
       .responseString { response in
