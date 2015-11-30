@@ -65,9 +65,9 @@ class MasterViewController: UITableViewController {
     
       if let fetchedGists = result.value {
         if self.nextPageURLString != nil {
-        self.gists += fetchedGists
-      } else {
-        self.gists = fetchedGists
+          self.gists += fetchedGists
+        } else {
+          self.gists = fetchedGists
         }
       }
       
