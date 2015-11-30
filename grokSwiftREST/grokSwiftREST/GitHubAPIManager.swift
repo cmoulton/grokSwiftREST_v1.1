@@ -67,6 +67,20 @@ class GitHubAPIManager {
       }
   }
   
+  // MARK: - OAuth 2.0
+  func printMyStarredGistsWithOAuth2() -> Void {
+    alamofireManager.request(GistRouter.GetMyStarred())
+      .responseString { response in
+        guard response.result.error == nil else {
+          print(response.result.error!)
+          return
+        }
+        if let receivedString = response.result.value {
+          print(receivedString)
+        }
+      }
+  }
+  
   func getGists(urlRequest: URLRequestConvertible, completionHandler: (Result<[Gist], NSError>, String?) -> Void) {
     alamofireManager.request(urlRequest)
       .validate()
