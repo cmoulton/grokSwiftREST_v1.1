@@ -49,7 +49,7 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
   
   func loadGists(urlToLoad: String?) {
     self.isLoading = true
-    GitHubAPIManager.sharedInstance.getPublicGists(urlToLoad) {
+    GitHubAPIManager.sharedInstance.getMyStarredGists(urlToLoad) {
       (result, nextPage) in
       self.isLoading = false
       self.nextPageURLString = nextPage
@@ -188,8 +188,11 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
   
   // MARK: - Pull to Refresh
   func refresh(sender:AnyObject) {
+    let defaults = NSUserDefaults.standardUserDefaults()
+    defaults.setBool(false, forKey: "loadingOAuthToken")
+    
     nextPageURLString = nil // so it doesn't try to append the results
-    loadGists(nil)
+    loadInitialData()
   }
   
   // MARK: - Login View Delegate
