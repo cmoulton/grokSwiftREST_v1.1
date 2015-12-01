@@ -24,8 +24,6 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
   override func viewDidLoad() {
     super.viewDidLoad()
     // Do any additional setup after loading the view, typically from a nib.
-    let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "insertNewObject:")
-    self.navigationItem.rightBarButtonItem = addButton
     if let split = self.splitViewController {
       let controllers = split.viewControllers
       self.detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
@@ -148,10 +146,10 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
     // Dispose of any resources that can be recreated.
   }
   
+  // MARK: - Creation
   func insertNewObject(sender: AnyObject) {
-    let alert = UIAlertController(title: "Not Implemented", message: "Can't create new gists yet, will implement later", preferredStyle: UIAlertControllerStyle.Alert)
-    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-    self.presentViewController(alert, animated: true, completion: nil)
+    let createVC = CreateGistViewController(nibName: nil, bundle: nil)
+    self.navigationController?.pushViewController(createVC, animated: true)
   }
   
   // MARK: - Segues
@@ -288,10 +286,15 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
   
   // MARK : - IBActions
   @IBAction func segmentedControlValueChanged(sender: UISegmentedControl) {
+    // only show add button for my gists
     if (gistSegmentedControl.selectedSegmentIndex == 2) {
       self.navigationItem.leftBarButtonItem = self.editButtonItem()
+      let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self,
+        action: "insertNewObject:")
+      self.navigationItem.rightBarButtonItem = addButton
     } else {
       self.navigationItem.leftBarButtonItem = nil
+      self.navigationItem.rightBarButtonItem = nil
     }
     loadGists(nil)
   }
