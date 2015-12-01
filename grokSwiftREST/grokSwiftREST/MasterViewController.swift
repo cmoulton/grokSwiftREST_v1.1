@@ -9,6 +9,7 @@
 import UIKit
 import PINRemoteImage
 import SafariServices
+import Alamofire
 
 class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariViewControllerDelegate {
   
@@ -18,6 +19,7 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
   var isLoading = false
   var dateFormatter = NSDateFormatter()
   var safariViewController: SFSafariViewController?
+  @IBOutlet weak var gistSegmentedControl: UISegmentedControl!
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -49,8 +51,8 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
   
   func loadGists(urlToLoad: String?) {
     self.isLoading = true
-    GitHubAPIManager.sharedInstance.getMyStarredGists(urlToLoad) {
-      (result, nextPage) in
+    let completionHandler: (Result<[Gist], NSError>, String?) -> Void =
+    { (result, nextPage) in
       self.isLoading = false
       self.nextPageURLString = nextPage
       
@@ -58,7 +60,7 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
       if self.refreshControl != nil && self.refreshControl!.refreshing {
         self.refreshControl?.endRefreshing()
       }
-    
+      
       guard result.error == nil else {
         print(result.error)
         self.nextPageURLString = nil
@@ -66,15 +68,15 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
         self.isLoading = false
         if let error = result.error {
           if error.domain == NSURLErrorDomain &&
-          error.code == NSURLErrorUserAuthenticationRequired {
-            self.showOAuthLoginView()
+            error.code == NSURLErrorUserAuthenticationRequired {
+              self.showOAuthLoginView()
           }
         }
         return
       }
-    
+      
       if let fetchedGists = result.value {
-        if self.nextPageURLString != nil {
+        if urlToLoad != nil {
           self.gists += fetchedGists
         } else {
           self.gists = fetchedGists
@@ -87,6 +89,20 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
       self.refreshControl?.attributedTitle = NSAttributedString(string: updateString)
       
       self.tableView.reloadData()
+    }
+    
+    switch gistSegmentedControl.selectedSegmentIndex {
+    case 0:
+      GitHubAPIManager.sharedInstance.getPublicGists(urlToLoad, completionHandler:
+        completionHandler)
+    case 1:
+      GitHubAPIManager.sharedInstance.getMyStarredGists(urlToLoad, completionHandler:
+        completionHandler)
+    case 2:
+      GitHubAPIManager.sharedInstance.getMyGists(urlToLoad, completionHandler:
+        completionHandler)
+    default:
+      print("got an index that I didn't expect for selectedSegmentIndex")
     }
   }
   
@@ -251,6 +267,11 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
       }
       controller.dismissViewControllerAnimated(true, completion: nil)
     }
+  }
+  
+  // MARK : - IBActions
+  @IBAction func segmentedControlValueChanged(sender: UISegmentedControl) {
+    loadGists(nil)
   }
 }
 

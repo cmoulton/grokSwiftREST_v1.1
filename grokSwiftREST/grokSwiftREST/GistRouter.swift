@@ -14,6 +14,7 @@ enum GistRouter: URLRequestConvertible {
   
   case GetPublic() // GET https://api.github.com/gists/public
   case GetMyStarred() // GET https://api.github.com/gists/starred
+  case GetMine() // GET https://api.github.com/gists
   case GetAtPath(String) // GET at given path
   
   var URLRequest: NSMutableURLRequest {
@@ -22,6 +23,8 @@ enum GistRouter: URLRequestConvertible {
       case .GetPublic:
         return .GET
       case .GetMyStarred:
+        return .GET
+      case .GetMine:
         return .GET
       case .GetAtPath:
         return .GET
@@ -34,6 +37,8 @@ enum GistRouter: URLRequestConvertible {
         return ("/gists/public", nil)
       case .GetMyStarred:
         return ("/gists/starred", nil)
+      case .GetMine:
+        return ("/gists", nil)
       case .GetAtPath(let path):
         let URL = NSURL(string: path)
         let relativePath = URL!.relativePath!
