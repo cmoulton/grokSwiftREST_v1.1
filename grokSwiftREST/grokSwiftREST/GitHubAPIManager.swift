@@ -271,6 +271,49 @@ class GitHubAPIManager {
       }
   }
   
+  // MARK: Starring / Unstarring / Star status
+  func isGistStarred(gistId: String, completionHandler: Result<Bool, NSError> -> Void) {
+    // GET /gists/:id/star
+    alamofireManager.request(GistRouter.IsStarred(gistId))
+      .validate(statusCode: [204])
+      .response { (request, response, data, error) in
+        // 204 if starred, 404 if not
+        if let error = error {
+          print(error)
+          if response?.statusCode == 404 {
+            completionHandler(.Success(false))
+            return
+          }
+          completionHandler(.Failure(error))
+          return
+        }
+        completionHandler(.Success(true))
+    }
+  }
+  
+  func starGist(gistId: String, completionHandler: (NSError?) -> Void) {
+    alamofireManager.request(GistRouter.Star(gistId))
+      .response { (request, response, data, error) in
+        if let error = error {
+          print(error)
+          return
+        }
+        completionHandler(error)
+    }
+  }
+  
+  func unstarGist(gistId: String, completionHandler: (NSError?) -> Void) {
+    alamofireManager.request(GistRouter.Unstar(gistId))
+      .response { (request, response, data, error) in
+        if let error = error {
+          print(error)
+          return
+        }
+        completionHandler(error)
+    }
+  }
+  
+  // MARK: - Images
   func imageFromURLString(imageURLString: String, completionHandler:
     (UIImage?, NSError?) -> Void) {
     alamofireManager.request(.GET, imageURLString)
@@ -285,6 +328,7 @@ class GitHubAPIManager {
     }
   }
   
+  // MARK: - Load More
   private func getNextPageFromHeaders(response: NSHTTPURLResponse?) -> String? {
     if let linkHeader = response?.allHeaderFields["Link"] as? String {
       /* looks like:
