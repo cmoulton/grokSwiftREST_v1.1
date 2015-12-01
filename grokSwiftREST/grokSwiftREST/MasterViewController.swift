@@ -24,8 +24,6 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
   override func viewDidLoad() {
     super.viewDidLoad()
     // Do any additional setup after loading the view, typically from a nib.
-    self.navigationItem.leftBarButtonItem = self.editButtonItem()
-    
     let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "insertNewObject:")
     self.navigationItem.rightBarButtonItem = addButton
     if let split = self.splitViewController {
@@ -210,17 +208,36 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
   }
   
   override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-    // Return false if you do not want the specified item to be editable.
-    return true
+    // only allow editing my gists
+    return gistSegmentedControl.selectedSegmentIndex == 2
   }
   
   override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
     if editingStyle == .Delete {
-      gists.removeAtIndex(indexPath.row)
+      let gistToDelete = gists.removeAtIndex(indexPath.row)
       tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-    } else if editingStyle == .Insert {
-      // Create a new instance of the appropriate class, insert it into the array,
-      // and add a new row to the table view.
+      // delete from API
+      if let id = gists[indexPath.row].id {
+        GitHubAPIManager.sharedInstance.deleteGist(id, completionHandler: {
+          (error) in
+          print(error)
+          if let _ = error {
+            // Put it back
+            self.gists.insert(gistToDelete, atIndex: indexPath.row)
+            tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Right)
+            // tell them it didn't work
+            let alertController = UIAlertController(title: "Could not delete gist",
+              message: "Sorry, your gist couldn't be deleted. Maybe GitHub is "
+                + "down or you don't have an internet connection.",
+              preferredStyle: .Alert)
+            // add ok button
+            let okAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+            alertController.addAction(okAction)
+            // show the alert
+            self.presentViewController(alertController, animated:true, completion: nil)
+          }
+        })
+      }
     }
   }
   
@@ -271,6 +288,11 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
   
   // MARK : - IBActions
   @IBAction func segmentedControlValueChanged(sender: UISegmentedControl) {
+    if (gistSegmentedControl.selectedSegmentIndex == 2) {
+      self.navigationItem.leftBarButtonItem = self.editButtonItem()
+    } else {
+      self.navigationItem.leftBarButtonItem = nil
+    }
     loadGists(nil)
   }
 }

@@ -333,6 +333,25 @@ class GitHubAPIManager {
     }
   }
   
+  // MARK: - Creating and Delete
+  func deleteGist(gistId: String, completionHandler: (NSError?) -> Void) {
+    alamofireManager.request(GistRouter.Delete(gistId))
+      .isUnauthorized { response in
+        if let unauthorized = response.result.value where unauthorized == true {
+          let lostOAuthError = self.handleUnauthorizedResponse()
+          completionHandler(lostOAuthError)
+          return // don't bother with .responseArray, we didn't get any data
+        }
+      }
+      .response { (request, response, data, error) in
+        if let error = error {
+          print(error)
+          return
+        }
+        completionHandler(error)
+    }
+  }
+  
   // MARK: - Images
   func imageFromURLString(imageURLString: String, completionHandler:
     (UIImage?, NSError?) -> Void) {
