@@ -19,6 +19,7 @@ enum GistRouter: URLRequestConvertible {
   case IsStarred(String) // GET https://api.github.com/gists/\(gistId)/star
   case Star(String) // PUT https://api.github.com/gists/\(gistId)/star
   case Unstar(String) // DELETE https://api.github.com/gists/\(gistId)/star
+  case Create([String: AnyObject]) // POST https://api.github.com/gists
   case Delete(String) // DELETE https://api.github.com/gists/\(gistId)
   
   var URLRequest: NSMutableURLRequest {
@@ -40,6 +41,8 @@ enum GistRouter: URLRequestConvertible {
         return .DELETE
       case .Delete:
         return .DELETE
+      case .Create:
+        return .POST
       }
     }
     
@@ -63,6 +66,8 @@ enum GistRouter: URLRequestConvertible {
         return ("/gists/\(id)/star", nil)
       case .Delete(let id):
         return ("/gists/\(id)", nil)
+      case .Create(let params):
+        return ("/gists", params)
       }
     }()
     
