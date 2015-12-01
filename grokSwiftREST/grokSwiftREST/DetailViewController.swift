@@ -12,6 +12,7 @@ import SafariServices
 class DetailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
   @IBOutlet weak var tableView: UITableView!
   var isStarred: Bool?
+  var alertController: UIAlertController?
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -49,7 +50,19 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
         result in
         if let error = result.error {
           print(error)
+          if error.domain == NSURLErrorDomain &&
+            error.code == NSURLErrorUserAuthenticationRequired {
+              self.alertController = UIAlertController(title:
+                "Could not get starred status", message: error.description,
+                preferredStyle: .Alert)
+              // add ok button
+              let okAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+              self.alertController?.addAction(okAction)
+              self.presentViewController(self.alertController!, animated:true,
+                completion: nil)
+          }
         }
+        
         if let status = result.value where self.isStarred == nil { // just got it
           self.isStarred = status
           self.tableView?.insertRowsAtIndexPaths(
@@ -66,6 +79,20 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
         (error) in
         if let error = error {
           print(error)
+          if error.domain == NSURLErrorDomain &&
+            error.code == NSURLErrorUserAuthenticationRequired {
+              self.alertController = UIAlertController(title: "Could not star gist",
+                message: error.description, preferredStyle: .Alert)
+          } else {
+            self.alertController = UIAlertController(title: "Could not star gist",
+              message: "Sorry, your gist couldn't be starred. " +
+              "Maybe GitHub is down or you don't have an internet connection.",
+              preferredStyle: .Alert)
+          }
+          // add ok button
+          let okAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+          self.alertController?.addAction(okAction)
+          self.presentViewController(self.alertController!, animated:true, completion: nil)
         } else {
           self.isStarred = true
           self.tableView.reloadRowsAtIndexPaths(
@@ -82,6 +109,20 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
         (error) in
         if let error = error {
           print(error)
+          if error.domain == NSURLErrorDomain &&
+            error.code == NSURLErrorUserAuthenticationRequired {
+              self.alertController = UIAlertController(title: "Could not unstar gist",
+                message: error.description, preferredStyle: .Alert)
+          } else {
+            self.alertController = UIAlertController(title: "Could not unstar gist",
+              message: "Sorry, your gist couldn't be unstarred. " +
+              " Maybe GitHub is down or you don't have an internet connection.",
+              preferredStyle: .Alert)
+          }
+          // add ok button
+          let okAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+          self.alertController?.addAction(okAction)
+          self.presentViewController(self.alertController!, animated:true, completion: nil)
         } else {
           self.isStarred = false
           self.tableView.reloadRowsAtIndexPaths(
@@ -91,7 +132,7 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
       })
     }
   }
-
+  
   // MARK: - Table view data source and delegate
   func numberOfSectionsInTableView(tableView: UITableView) -> Int {
     return 2

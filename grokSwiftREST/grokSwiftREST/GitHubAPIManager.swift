@@ -277,6 +277,11 @@ class GitHubAPIManager {
     alamofireManager.request(GistRouter.IsStarred(gistId))
       .validate(statusCode: [204])
       .response { (request, response, data, error) in
+        if let urlResponse = response, authError = self.checkUnauthorized(urlResponse) {
+          completionHandler(.Failure(authError))
+          return
+        }
+        
         // 204 if starred, 404 if not
         if let error = error {
           print(error)
@@ -294,6 +299,11 @@ class GitHubAPIManager {
   func starGist(gistId: String, completionHandler: (NSError?) -> Void) {
     alamofireManager.request(GistRouter.Star(gistId))
       .response { (request, response, data, error) in
+        if let urlResponse = response, authError = self.checkUnauthorized(urlResponse) {
+          completionHandler(authError)
+          return
+        }
+
         if let error = error {
           print(error)
           return
@@ -305,6 +315,11 @@ class GitHubAPIManager {
   func unstarGist(gistId: String, completionHandler: (NSError?) -> Void) {
     alamofireManager.request(GistRouter.Unstar(gistId))
       .response { (request, response, data, error) in
+        if let urlResponse = response, authError = self.checkUnauthorized(urlResponse) {
+          completionHandler(authError)
+          return
+        }
+
         if let error = error {
           print(error)
           return
