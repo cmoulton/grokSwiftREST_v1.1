@@ -8,9 +8,8 @@
 
 import UIKit
 
-class DetailViewController: UIViewController {
-
-  @IBOutlet weak var detailDescriptionLabel: UILabel!
+class DetailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+  @IBOutlet weak var tableView: UITableView!
   
   var gist: Gist? {
     didSet {
