@@ -15,13 +15,28 @@ class Gist: ResponseJSONObjectSerializable {
   var ownerLogin: String?
   var ownerAvatarURL: String?
   var url: String?
+  var files:[File]?
+  var createdAt:NSDate?
+  var updatedAt:NSDate?
   
-  required init(json: JSON) {
+  required init?(json: JSON) {
     self.description = json["description"].string
     self.id = json["id"].string
     self.ownerLogin = json["owner"]["login"].string
     self.ownerAvatarURL = json["owner"]["avatar_url"].string
     self.url = json["url"].string
+    
+    // files
+    self.files = [File]()
+    if let filesJSON = json["files"].dictionary {
+      for (_, fileJSON) in filesJSON {
+        if let newFile = File(json: fileJSON) {
+          self.files?.append(newFile)
+        }
+      }
+    }
+    
+    // TODO: dates
   }
   
   required init() {

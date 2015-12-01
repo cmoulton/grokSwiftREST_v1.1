@@ -15,6 +15,7 @@
 		CF20E0E61C0B4CA70073B0CF /* placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = CF20E0E51C0B4CA70073B0CF /* placeholder.png */; };
 		CF20E0E81C0C988E0073B0CF /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF20E0E71C0C988E0073B0CF /* LoginViewController.swift */; };
 		CF20E0EA1C0C9B290073B0CF /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF20E0E91C0C9B290073B0CF /* SafariServices.framework */; };
+		CF20E10C1C0DDDE20073B0CF /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF20E10B1C0DDDE20073B0CF /* File.swift */; };
 		CF3047231BD677970006CC45 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF3047221BD677970006CC45 /* AppDelegate.swift */; };
 		CF3047251BD677970006CC45 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF3047241BD677970006CC45 /* MasterViewController.swift */; };
 		CF3047271BD677970006CC45 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF3047261BD677970006CC45 /* DetailViewController.swift */; };
@@ -36,6 +37,7 @@
 		CF20E0E51C0B4CA70073B0CF /* placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = placeholder.png; path = grokSwiftREST/placeholder.png; sourceTree = SOURCE_ROOT; };
 		CF20E0E71C0C988E0073B0CF /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		CF20E0E91C0C9B290073B0CF /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
+		CF20E10B1C0DDDE20073B0CF /* File.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		CF30471F1BD677970006CC45 /* grokSwiftREST.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = grokSwiftREST.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF3047221BD677970006CC45 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CF3047241BD677970006CC45 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
@@ -109,6 +111,7 @@
 				CF20D7A71C0B2D870073B0CF /* GitHubAPIManager.swift */,
 				CF20D7A91C0B2DB60073B0CF /* GistRouter.swift */,
 				CF20D7AB1C0B45BB0073B0CF /* Gist.swift */,
+				CF20E10B1C0DDDE20073B0CF /* File.swift */,
 				CF20D7AF1C0B48180073B0CF /* AlamofireRequest+JSONSerializable.swift */,
 				CF20D7AD1C0B47B00073B0CF /* ResponseJSONObjectSerializable.swift */,
 				CF20E0E51C0B4CA70073B0CF /* placeholder.png */,
@@ -243,6 +246,7 @@
 				CF20D7A81C0B2D870073B0CF /* GitHubAPIManager.swift in Sources */,
 				CF20D7AE1C0B47B00073B0CF /* ResponseJSONObjectSerializable.swift in Sources */,
 				CF20D7AC1C0B45BB0073B0CF /* Gist.swift in Sources */,
+				CF20E10C1C0DDDE20073B0CF /* File.swift in Sources */,
 				CF3047251BD677970006CC45 /* MasterViewController.swift in Sources */,
 				CF20D7AA1C0B2DB60073B0CF /* GistRouter.swift in Sources */,
 				CF3047231BD677970006CC45 /* AppDelegate.swift in Sources */,
