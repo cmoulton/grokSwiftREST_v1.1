@@ -378,6 +378,7 @@ class GitHubAPIManager {
             completionHandler(.Success(false))
             return
           }
+          self.clearCache()
           completionHandler(.Success(true))
       }
   }
@@ -426,5 +427,10 @@ class GitHubAPIManager {
       }
     }
     return nil
+  }
+  
+  func clearCache() {
+    let cache = NSURLCache.sharedURLCache()
+    cache.removeAllCachedResponses()
   }
 }
