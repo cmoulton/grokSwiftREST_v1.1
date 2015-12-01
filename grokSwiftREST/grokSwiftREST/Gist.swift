@@ -19,6 +19,8 @@ class Gist: ResponseJSONObjectSerializable {
   var createdAt:NSDate?
   var updatedAt:NSDate?
   
+  static let sharedDateFormatter = Gist.dateFormatter()
+  
   required init?(json: JSON) {
     self.description = json["description"].string
     self.id = json["id"].string
@@ -36,9 +38,24 @@ class Gist: ResponseJSONObjectSerializable {
       }
     }
     
-    // TODO: dates
+    // Dates
+    let dateFormatter = Gist.sharedDateFormatter
+    if let dateString = json["created_at"].string {
+      self.createdAt = dateFormatter.dateFromString(dateString)
+    }
+    if let dateString = json["updated_at"].string {
+      self.updatedAt = dateFormatter.dateFromString(dateString)
+    }
   }
   
   required init() {
+  }
+  
+  class func dateFormatter() -> NSDateFormatter {
+    let aDateFormatter = NSDateFormatter()
+    aDateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+    aDateFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
+    aDateFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
+    return aDateFormatter
   }
 }
