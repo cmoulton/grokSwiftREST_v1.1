@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SafariServices
 
 class DetailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
   @IBOutlet weak var tableView: UITableView!
@@ -72,6 +73,18 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
       }
     }
     return cell
+  }
+  
+  func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    if indexPath.section == 1 {
+      if let file = gist?.files?[indexPath.row],
+        urlString = file.raw_url,
+        url = NSURL(string: urlString) {
+          let safariViewController = SFSafariViewController(URL: url)
+          safariViewController.title = file.filename
+          self.navigationController?.pushViewController(safariViewController, animated: true)
+      }
+    }
   }
 }
 
