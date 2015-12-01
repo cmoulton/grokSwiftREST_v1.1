@@ -163,7 +163,7 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
       if let indexPath = self.tableView.indexPathForSelectedRow {
         let gist = gists[indexPath.row] as Gist
         if let detailViewController = (segue.destinationViewController as! UINavigationController).topViewController as? DetailViewController {
-          detailViewController.detailItem = gist
+          detailViewController.gist = gist
           detailViewController.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
           detailViewController.navigationItem.leftItemsSupplementBackButton = true
         }
