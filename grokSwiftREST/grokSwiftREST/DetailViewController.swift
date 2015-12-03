@@ -22,6 +22,13 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
     self.configureView()
   }
   
+  override func viewWillDisappear(animated: Bool) {
+    if let existingBanner = self.notConnectedBanner {
+      existingBanner.dismiss()
+    }
+    super.viewWillDisappear(animated)
+  }
+  
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
     // Dispose of any resources that can be recreated.

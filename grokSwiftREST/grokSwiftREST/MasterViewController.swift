@@ -47,6 +47,13 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
     }
   }
   
+  override func viewWillDisappear(animated: Bool) {
+    if let existingBanner = self.notConnectedBanner {
+      existingBanner.dismiss()
+    }
+    super.viewWillDisappear(animated)
+  }
+  
   func loadGists(urlToLoad: String?) {
     self.isLoading = true
     let completionHandler: (Result<[Gist], NSError>, String?) -> Void =
