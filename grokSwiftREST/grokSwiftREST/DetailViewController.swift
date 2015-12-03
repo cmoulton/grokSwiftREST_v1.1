@@ -185,7 +185,7 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
     
     if indexPath.section == 0 {
       if indexPath.row == 0 {
-        cell.textLabel?.text = gist?.description
+        cell.textLabel?.text = gist?.gistDescription
       } else if indexPath.row == 1 {
         cell.textLabel?.text = gist?.ownerLogin
       } else {
