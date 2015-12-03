@@ -8,11 +8,13 @@
 
 import UIKit
 import SafariServices
+import BRYXBanner
 
 class DetailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
   @IBOutlet weak var tableView: UITableView!
   var isStarred: Bool?
   var alertController: UIAlertController?
+  var notConnectedBanner: Banner?
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -50,8 +52,8 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
         result in
         if let error = result.error {
           print(error)
-          if error.domain == NSURLErrorDomain &&
-            error.code == NSURLErrorUserAuthenticationRequired {
+          if error.domain == NSURLErrorDomain {
+            if error.code == NSURLErrorUserAuthenticationRequired {
               self.alertController = UIAlertController(title:
                 "Could not get starred status", message: error.description,
                 preferredStyle: .Alert)
@@ -59,7 +61,21 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
               let okAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
               self.alertController?.addAction(okAction)
               self.presentViewController(self.alertController!, animated:true,
-                completion: nil)
+                  completion: nil)
+            } else if error.code == NSURLErrorNotConnectedToInternet {
+                // show not connected error & tell em to try again when they do have a connection
+                // check for existing banner
+                if let existingBanner = self.notConnectedBanner {
+                  existingBanner.dismiss()
+                }
+                self.notConnectedBanner = Banner(title: "No Internet Connection",
+                  subtitle: "Can not display starred status. " +
+                  "Try again when you're connected to the internet",
+                  image: nil,
+                  backgroundColor: UIColor.orangeColor())
+                self.notConnectedBanner?.dismissesOnSwipe = true
+                self.notConnectedBanner?.show(duration: nil)
+            }
           }
         }
         
