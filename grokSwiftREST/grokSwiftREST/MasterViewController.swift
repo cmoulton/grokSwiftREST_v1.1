@@ -141,9 +141,22 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
       if let error = error {
         print(error)
         self.isLoading = false
-        // TODO: handle error
-        // Something went wrong, try again
-        self.showOAuthLoginView()
+        if error.domain == NSURLErrorDomain && error.code == NSURLErrorNotConnectedToInternet {
+          // show not connected error & tell em to try again when they do have a connection
+          // check for existing banner
+          if let existingBanner = self.notConnectedBanner {
+            existingBanner.dismiss()
+          }
+          self.notConnectedBanner = Banner(title: "No Internet Connection",
+            subtitle: "Could not load gists. Try again when you're connected to the internet",
+            image: nil,
+            backgroundColor: UIColor.redColor())
+          self.notConnectedBanner?.dismissesOnSwipe = true
+          self.notConnectedBanner?.show(duration: nil)
+        } else {
+          // Something went wrong, try again
+          self.showOAuthLoginView()
+        }
       } else {
         self.loadGists(nil)
       }
@@ -297,8 +310,6 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
   func safariViewController(controller: SFSafariViewController, didCompleteInitialLoad didLoadSuccessfully: Bool) {
     // Detect not being able to load the OAuth URL
     if (!didLoadSuccessfully) {
-      let defaults = NSUserDefaults.standardUserDefaults()
-      defaults.setBool(false, forKey: "loadingOAuthToken")
       if let completionHandler = GitHubAPIManager.sharedInstance.OAuthTokenCompletionHandler {
         let error = NSError(domain: NSURLErrorDomain, code: NSURLErrorNotConnectedToInternet, userInfo: [NSLocalizedDescriptionKey: "No Internet Connection", NSLocalizedRecoverySuggestionErrorKey: "Please retry your request"])
         completionHandler(error)
