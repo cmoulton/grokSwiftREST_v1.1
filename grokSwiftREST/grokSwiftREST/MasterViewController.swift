@@ -217,7 +217,7 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
     let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
     
     let gist = gists[indexPath.row]
-    cell.textLabel!.text = gist.description
+    cell.textLabel!.text = gist.gistDescription
     cell.detailTextLabel!.text = gist.ownerLogin
     cell.imageView?.image = nil
     
