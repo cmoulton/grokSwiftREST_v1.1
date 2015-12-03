@@ -319,6 +319,11 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
       self.navigationItem.leftBarButtonItem = nil
       self.navigationItem.rightBarButtonItem = nil
     }
+    
+    // clear gists so they can't get shown for the wrong list
+    self.gists = [Gist]()
+    self.tableView.reloadData()
+    
     loadGists(nil)
   }
 }
