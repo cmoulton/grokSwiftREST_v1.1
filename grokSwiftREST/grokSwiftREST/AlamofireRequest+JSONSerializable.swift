@@ -80,17 +80,4 @@ extension Alamofire.Request {
       
       return response(responseSerializer: serializer, completionHandler: completionHandler)
   }
-  
-  public func isUnauthorized(completionHandler: Response<Bool, NSError> -> Void) -> Self {
-    let serializer = ResponseSerializer<Bool, NSError> { request, response, data, error in
-      if let code = response?.statusCode {
-        return .Success(code == 401)
-      }
-      let error = Error.errorWithCode(.StatusCodeValidationFailed, failureReason:
-        "No status code received")
-      return .Failure(error)
-    }
-    
-    return response(responseSerializer: serializer, completionHandler: completionHandler)
-  }
 }
