@@ -46,33 +46,49 @@ enum GistRouter: URLRequestConvertible {
       }
     }
     
-    let result: (path: String, parameters: [String: AnyObject]?) = {
+    let url:NSURL = {
+      // build up and return the URL for each endpoint
+      let relativePath:String?
       switch self {
       case .GetPublic:
-        return ("/gists/public", nil)
+        relativePath = "/gists/public"
       case .GetMyStarred:
-        return ("/gists/starred", nil)
+        relativePath = "/gists/starred"
       case .GetMine:
-        return ("/gists", nil)
-      case .GetAtPath(let path):
-        let URL = NSURL(string: path)
-        let relativePath = URL!.relativePath!
-        return (relativePath, nil)
+        relativePath = "/gists"
       case .IsStarred(let id):
-        return ("/gists/\(id)/star", nil)
+        relativePath = "/gists/\(id)/star"
       case .Star(let id):
-        return ("/gists/\(id)/star", nil)
+        relativePath = "/gists/\(id)/star"
       case .Unstar(let id):
-        return ("/gists/\(id)/star", nil)
+        relativePath = "/gists/\(id)/star"
       case .Delete(let id):
-        return ("/gists/\(id)", nil)
+        relativePath = "/gists/\(id)"
+      case .Create:
+        relativePath = "/gists"
+        
+      case .GetAtPath(let path):
+        // already have the full URL, so just return it
+        return NSURL(string: path)!
+      }
+      
+      var URL = NSURL(string: GistRouter.baseURLString)!
+      if let relativePath = relativePath {
+        URL = URL.URLByAppendingPathComponent(relativePath)
+      }
+      return URL
+    }()
+    
+    let params: ([String: AnyObject]?) = {
+      switch self {
+      case .GetPublic, .GetMyStarred, .GetMine, .GetAtPath, .IsStarred, .Star, .Unstar, .Delete:
+        return (nil)
       case .Create(let params):
-        return ("/gists", params)
+        return (params)
       }
     }()
     
-    let URL = NSURL(string: GistRouter.baseURLString)!
-    let URLRequest = NSMutableURLRequest(URL: URL.URLByAppendingPathComponent(result.path))
+    let URLRequest = NSMutableURLRequest(URL: url)
     
     // Set OAuth token if we have one
     if let token = GitHubAPIManager.sharedInstance.OAuthToken {
@@ -80,7 +96,7 @@ enum GistRouter: URLRequestConvertible {
     }
     
     let encoding = Alamofire.ParameterEncoding.JSON
-    let (encodedRequest, _) = encoding.encode(URLRequest, parameters: result.parameters)
+    let (encodedRequest, _) = encoding.encode(URLRequest, parameters: params)
     
     encodedRequest.HTTPMethod = method.rawValue
     
