@@ -272,10 +272,10 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
   
   override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
     if editingStyle == .Delete {
-      let gistToDelete = gists.removeAtIndex(indexPath.row)
-      tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-      // delete from API
       if let id = gists[indexPath.row].id {
+        let gistToDelete = gists.removeAtIndex(indexPath.row)
+        tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+        // delete from API
         GitHubAPIManager.sharedInstance.deleteGist(id, completionHandler: {
           (error) in
           print(error)
