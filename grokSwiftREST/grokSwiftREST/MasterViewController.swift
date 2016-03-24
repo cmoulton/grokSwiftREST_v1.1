@@ -40,7 +40,7 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
     if (self.refreshControl == nil) {
       self.refreshControl = UIRefreshControl()
       self.refreshControl?.attributedTitle = NSAttributedString(string: "Pull to refresh")
-      self.refreshControl?.addTarget(self, action: "refresh:",
+      self.refreshControl?.addTarget(self, action: #selector(MasterViewController.refresh(_:)),
         forControlEvents: UIControlEvents.ValueChanged)
       self.dateFormatter.dateStyle = NSDateFormatterStyle.ShortStyle
       self.dateFormatter.timeStyle = NSDateFormatterStyle.LongStyle
@@ -348,7 +348,7 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
     if (gistSegmentedControl.selectedSegmentIndex == 2) {
       self.navigationItem.leftBarButtonItem = self.editButtonItem()
       let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self,
-        action: "insertNewObject:")
+        action: #selector(MasterViewController.insertNewObject(_:)))
       self.navigationItem.rightBarButtonItem = addButton
     } else {
       self.navigationItem.leftBarButtonItem = nil

@@ -23,9 +23,9 @@ class CreateGistViewController: XLFormViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem:
-      UIBarButtonSystemItem.Cancel, target: self, action: "cancelPressed:")
+      UIBarButtonSystemItem.Cancel, target: self, action: #selector(CreateGistViewController.cancelPressed(_:)))
     self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem:
-      UIBarButtonSystemItem.Save, target: self, action: "savePressed:")
+      UIBarButtonSystemItem.Save, target: self, action: #selector(CreateGistViewController.savePressed(_:)))
   }
   
   private func initializeForm() {
