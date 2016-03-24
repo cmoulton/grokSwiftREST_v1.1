@@ -375,7 +375,7 @@ class GitHubAPIManager {
 
           if let error = error {
             print(error)
-            completionHandler(.Success(false))
+            completionHandler(.Failure(error))
             return
           }
           self.clearCache()
